@@ -21,7 +21,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
     <View style={StyleSheet.flatten([styles.radioGroup, className ? cn(className) : {}])}>
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
-          ? React.cloneElement(child, { value, onValueChange })
+          ? React.cloneElement(child as React.ReactElement<any>, ({ value, onValueChange } as any))
           : child
       )}
     </View>

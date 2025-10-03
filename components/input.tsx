@@ -13,11 +13,11 @@ export const Input: React.FC<InputProps> = ({ className, type = 'text', ...props
       keyboardType={type === 'number' ? 'numeric' : 'default'}
       style={StyleSheet.flatten([
         styles.input,
-        className ? cn(className) : {},
+        className ? (cn(className) as any) : {},
       ])}
       placeholderTextColor="#999"
-      editable={!props.disabled}
-      {...props}
+      editable={typeof props.editable === 'boolean' ? props.editable : true}
+      {...(props as any)}
     />
   );
 };

@@ -38,7 +38,7 @@ export const PaginationItem: React.FC<{ children: React.ReactNode }> = ({ childr
 interface PaginationLinkProps {
   isActive?: boolean;
   size?: 'icon' | 'default';
-  className?: string;
+  className?: any;
   children: React.ReactNode;
   onPress?: () => void;
 }

@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { cn } from './utils';
 
 interface SeparatorProps {
-  className?: string;
+  className?: any;
   orientation?: 'horizontal' | 'vertical';
   decorative?: boolean;
 }
@@ -21,7 +21,7 @@ export const Separator: React.FC<SeparatorProps> = ({
         orientation === 'horizontal' ? styles.horizontal : styles.vertical,
         className ? cn(className) : {},
       ])}
-      accessibilityRole={decorative ? 'none' : 'separator'}
+  accessibilityRole={decorative ? ('none' as any) : ('separator' as any)}
     />
   );
 };

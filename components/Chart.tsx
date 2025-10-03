@@ -1,11 +1,13 @@
 
 import * as React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { VictoryPie, VictoryChart, VictoryTooltip, VictoryLegend } from "victory-native"; // Assume installed
 import Svg from "react-native-svg";
 
-// Utility cn
-const cn = (...styles) => Object.assign({}, ...styles.map(s => styles[s] || s));
+// Treat victory-native imports as any (ambient decl added); keep local cn helper but typed permissively
+import type { VictoryPie as _VP, VictoryChart as _VC, VictoryTooltip as _VT, VictoryLegend as _VL } from 'victory-native';
+
+// Utility cn (typed permissively)
+const cn = (...styles: any[]) => Object.assign({}, ...styles.map((s: any) => (typeof s === 'number' ? {} : s || {})));
 
 const THEMES = { light: "#fff", dark: "#000" };
 

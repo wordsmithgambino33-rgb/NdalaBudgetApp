@@ -22,7 +22,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       <NavigationMenuList>
         {React.Children.map(children, (child, index) =>
           React.isValidElement(child) && child.type === NavigationMenuItem
-            ? React.cloneElement(child, { isActive: index === activeIndex, onPress: () => setActiveIndex(index) })
+            ? React.cloneElement(child as React.ReactElement<any>, ({ isActive: index === activeIndex, onPress: () => setActiveIndex(index) } as any))
             : child
         )}
       </NavigationMenuList>
@@ -94,7 +94,7 @@ export const NavigationMenuViewport: React.FC<NavigationMenuViewportProps> = ({ 
   </View>
 );
 
-export const NavigationMenuLink: React.FC<{ className?: string; children: React.ReactNode }> = ({
+export const NavigationMenuLink: React.FC<{ className?: any; children: React.ReactNode }> = ({
   className,
   children,
 }) => (

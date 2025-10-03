@@ -37,7 +37,7 @@ export const PopoverContent: React.FC<PopoverContentProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <View style={styles.overlay} onPress={() => setIsOpen(false)}>
+    <TouchableOpacity style={styles.overlay as any} activeOpacity={1} onPress={() => setIsOpen(false)}>
       {isOpen && (
         <View
           style={StyleSheet.flatten([
@@ -45,13 +45,13 @@ export const PopoverContent: React.FC<PopoverContentProps> = ({
             align === 'start' && { alignSelf: 'flex-start' },
             align === 'end' && { alignSelf: 'flex-end' },
             { marginTop: sideOffset },
-            className ? cn(className) : {},
+            className ? (cn(className) as any) : {},
           ])}
         >
           {children}
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -15,7 +15,7 @@ export const Select: React.FC<SelectProps> = ({ value, onValueChange, children }
     <View>
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
-          ? React.cloneElement(child, { value, onValueChange })
+          ? React.cloneElement(child as React.ReactElement<any>, { value, onValueChange } as any)
           : child
       )}
     </View>
@@ -68,7 +68,7 @@ export const SelectTrigger: React.FC<SelectTriggerProps> = ({
       >
         {React.Children.map(children, (child) =>
           React.isValidElement(child) && child.type === SelectValue
-            ? React.cloneElement(child, { placeholder: value || child.props.placeholder })
+            ? React.cloneElement(child as React.ReactElement<any>, { placeholder: value || (child as React.ReactElement<any>).props.placeholder } as any)
             : child
         )}
         <MaterialIcons name="arrow-drop-down" size={16} color="#666" />
@@ -87,7 +87,7 @@ export const SelectTrigger: React.FC<SelectTriggerProps> = ({
           <View style={styles.modalContent}>
             {React.Children.map(children, (child) =>
               React.isValidElement(child) && child.type === SelectContent
-                ? React.cloneElement(child, { onValueChange, setIsOpen })
+                ? React.cloneElement(child as React.ReactElement<any>, { onValueChange, setIsOpen } as any)
                 : null
             )}
           </View>
@@ -118,7 +118,7 @@ export const SelectContent: React.FC<SelectContentProps> = ({
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
-          ? React.cloneElement(child, { onValueChange, setIsOpen })
+          ? React.cloneElement(child as React.ReactElement<any>, { onValueChange, setIsOpen } as any)
           : child
       )}
     </ScrollView>
@@ -278,15 +278,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {
-  Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectLabel,
-  SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
-};
+// Named exports are declared inline above; no re-export block needed.

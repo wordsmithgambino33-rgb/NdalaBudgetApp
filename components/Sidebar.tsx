@@ -6,6 +6,7 @@ import { cn } from './utils';
 import { useIsMobile } from './useMobile';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from './Sheet';
 import { Separator } from './Separator';
+import { Skeleton } from './Skeleton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
@@ -187,7 +188,7 @@ interface SidebarContentProps {
 
 export const SidebarContent: React.FC<SidebarContentProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.content, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.content, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -200,7 +201,7 @@ interface SidebarFooterProps {
 
 export const SidebarFooter: React.FC<SidebarFooterProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.footer, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.footer, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -213,7 +214,7 @@ interface SidebarGroupProps {
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.group, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.group, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -227,7 +228,7 @@ interface SidebarGroupActionProps {
 export const SidebarGroupAction: React.FC<SidebarGroupActionProps> = ({ className, children }) => {
   return (
     <TouchableOpacity
-      style={StyleSheet.flatten([styles.groupAction, className ? cn(className) : {}])}
+      style={StyleSheet.flatten([styles.groupAction, className ? (cn(className) as any) : {}])}
       activeOpacity={0.7}
     >
       {children}
@@ -242,7 +243,7 @@ interface SidebarGroupContentProps {
 
 export const SidebarGroupContent: React.FC<SidebarGroupContentProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.groupContent, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.groupContent, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -255,7 +256,7 @@ interface SidebarGroupLabelProps {
 
 export const SidebarGroupLabel: React.FC<SidebarGroupLabelProps> = ({ className, children }) => {
   return (
-    <Text style={StyleSheet.flatten([styles.groupLabel, className ? cn(className) : {}])}>
+    <Text style={StyleSheet.flatten([styles.groupLabel, className ? (cn(className) as any) : {}])}>
       {children}
     </Text>
   );
@@ -268,7 +269,7 @@ interface SidebarHeaderProps {
 
 export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.header, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.header, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -282,11 +283,9 @@ interface SidebarInputProps {
 export const SidebarInput: React.FC<SidebarInputProps> = ({ className, children }) => {
   return (
     <TextInput
-      style={StyleSheet.flatten([styles.input, className ? cn(className) : {}])}
+      style={StyleSheet.flatten([styles.input, className ? (cn(className) as any) : {}])}
       placeholderTextColor="#666"
-    >
-      {children}
-    </TextInput>
+    />
   );
 };
 
@@ -297,7 +296,7 @@ interface SidebarInsetProps {
 
 export const SidebarInset: React.FC<SidebarInsetProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.inset, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.inset, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -310,7 +309,7 @@ interface SidebarMenuProps {
 
 export const SidebarMenu: React.FC<SidebarMenuProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.menu, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.menu, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -329,7 +328,7 @@ export const SidebarMenuAction: React.FC<SidebarMenuActionProps> = ({
 }) => {
   return (
     <TouchableOpacity
-      style={StyleSheet.flatten([styles.menuAction, className ? cn(className) : {}])}
+      style={StyleSheet.flatten([styles.menuAction, className ? (cn(className) as any) : {}])}
       activeOpacity={0.7}
     >
       {children}
@@ -344,7 +343,7 @@ interface SidebarMenuBadgeProps {
 
 export const SidebarMenuBadge: React.FC<SidebarMenuBadgeProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.menuBadge, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.menuBadge, className ? (cn(className) as any) : {}])}>
       <Text style={styles.badgeText}>{children}</Text>
     </View>
   );
@@ -373,7 +372,7 @@ export const SidebarMenuButton: React.FC<SidebarMenuButtonProps> = ({
         styles.menuButton,
         size === 'sm' ? styles.menuButtonSm : size === 'lg' ? styles.menuButtonLg : {},
         isActive ? styles.menuButtonActive : {},
-        className ? cn(className) : {},
+        className ? (cn(className) as any) : {},
       ])}
       onPress={onPress}
       activeOpacity={0.7}
@@ -390,7 +389,7 @@ interface SidebarMenuItemProps {
 
 export const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.menuItem, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.menuItem, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -409,9 +408,9 @@ export const SidebarMenuSkeleton: React.FC<SidebarMenuSkeletonProps> = ({
   const width = `${Math.floor(Math.random() * 40) + 50}%`;
 
   return (
-    <View style={StyleSheet.flatten([styles.menuSkeleton, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.menuSkeleton, className ? (cn(className) as any) : {}])}>
       {showIcon && <Skeleton style={styles.skeletonIcon} />}
-      <Skeleton style={[styles.skeletonText, { width }]} />
+      <Skeleton style={[styles.skeletonText as any, { width } as any] as any} />
     </View>
   );
 };
@@ -423,7 +422,7 @@ interface SidebarMenuSubProps {
 
 export const SidebarMenuSub: React.FC<SidebarMenuSubProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.menuSub, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.menuSub, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -436,7 +435,7 @@ interface SidebarMenuSubItemProps {
 
 export const SidebarMenuSubItem: React.FC<SidebarMenuSubItemProps> = ({ className, children }) => {
   return (
-    <View style={StyleSheet.flatten([styles.menuSubItem, className ? cn(className) : {}])}>
+    <View style={StyleSheet.flatten([styles.menuSubItem, className ? (cn(className) as any) : {}])}>
       {children}
     </View>
   );
@@ -461,7 +460,7 @@ export const SidebarMenuSubButton: React.FC<SidebarMenuSubButtonProps> = ({
         styles.menuSubButton,
         size === 'sm' ? styles.menuSubButtonSm : {},
         isActive ? styles.menuSubButtonActive : {},
-        className ? cn(className) : {},
+        className ? (cn(className) as any) : {},
       ])}
       activeOpacity={0.7}
     >
@@ -475,7 +474,7 @@ interface SidebarRailProps {
 }
 
 export const SidebarRail: React.FC<SidebarRailProps> = ({ className }) => {
-  return <View style={StyleSheet.flatten([styles.rail, className ? cn(className) : {}])} />;
+  return <View style={StyleSheet.flatten([styles.rail, className ? (cn(className) as any) : {}])} />;
 };
 
 interface SidebarSeparatorProps {
@@ -496,7 +495,7 @@ export const SidebarTrigger: React.FC<SidebarTriggerProps> = ({ className, child
 
   return (
     <TouchableOpacity
-      style={StyleSheet.flatten([styles.trigger, className ? cn(className) : {}])}
+      style={StyleSheet.flatten([styles.trigger, className ? (cn(className) as any) : {}])}
       onPress={toggleSidebar}
       activeOpacity={0.7}
     >
@@ -645,47 +644,21 @@ const styles = StyleSheet.create({
   },
   menuSubButtonSm: {
     padding: 6,
-  Ascending
-    },
-    menuSubButtonActive: {
-      backgroundColor: '#e0e0e0',
-    },
+  },
+  menuSubButtonActive: {
+    backgroundColor: '#e0e0e0',
+  },
     rail: {
       width: 2,
       backgroundColor: '#ccc',
     },
     trigger: {
       width: 20,
-      height: Tor 20,
+      height: 20,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 4,
     },
 });
 
-export {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInput,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuAction,
-  SidebarMenuBadge,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSkeleton,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
-  SidebarProvider,
-  SidebarRail,
-  SidebarSeparator,
-  SidebarTrigger,
-  useSidebar,
-};
+// Exports are defined inline above for each component.

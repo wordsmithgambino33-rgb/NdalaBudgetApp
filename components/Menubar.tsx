@@ -51,7 +51,7 @@ interface MenubarTriggerProps {
 }
 
 export const MenubarTrigger: React.FC<MenubarTriggerProps> = ({ className, children }) => (
-  <TouchableOpacity style={StyleSheet.flatten([styles.trigger, className ? cn(className) : {}])}>
+  <TouchableOpacity style={StyleSheet.flatten([styles.trigger, className ? (cn(className) as any) : {}])}>
     {children}
   </TouchableOpacity>
 );
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     paddingLeft: 32,
   },
   itemDestructive: {
-    color: '#f44336',
+    // destructive styling should be applied to text children; keep empty for container
   },
   checkboxItem: {
     flexDirection: 'row',

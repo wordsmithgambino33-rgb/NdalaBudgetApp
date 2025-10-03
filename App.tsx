@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { themes } from '../styles/theme';
+import { themes } from './styles/theme';
 
 interface ThemeContextType {
   theme: typeof themes.light;
@@ -30,3 +30,10 @@ export const useTheme = () => {
   }
   return context;
 };
+
+// Minimal default App export for tests and consumers expecting a default
+const App: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  return <ThemeProvider>{children}</ThemeProvider>;
+};
+
+export default App;

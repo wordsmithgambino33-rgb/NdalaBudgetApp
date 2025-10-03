@@ -5,14 +5,16 @@ import { cn } from './utils';
 
 interface SkeletonProps {
   className?: string;
+  style?: any;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({ className }) => {
+export const Skeleton: React.FC<SkeletonProps> = ({ className, style }) => {
   return (
     <View
       style={StyleSheet.flatten([
         styles.skeleton,
         className ? cn(className) : {},
+        style,
       ])}
     />
   );

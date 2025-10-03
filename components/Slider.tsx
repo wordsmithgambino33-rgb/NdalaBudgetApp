@@ -58,8 +58,8 @@ export const Slider: React.FC<SliderProps> = ({
         styles.slider,
         orientation === 'vertical' ? styles.sliderVertical : {},
         disabled ? styles.disabled : {},
-        className ? cn(className) : {},
-      ])}
+        className ? (cn(className) as any) : {},
+      ]) as any}
     >
       <View style={styles.track}>
         <View
@@ -75,8 +75,8 @@ export const Slider: React.FC<SliderProps> = ({
           {...panResponders[index].panHandlers}
           style={StyleSheet.flatten([
             styles.thumb,
-            { [orientation === 'horizontal' ? 'left' : 'bottom']: `${((val - min) / (max - min)) * 100}%` },
-          ])}
+            ({ [orientation === 'horizontal' ? 'left' : 'bottom']: `${((val - min) / (max - min)) * 100}%` } as any),
+          ]) as any}
         />
       ))}
     </View>

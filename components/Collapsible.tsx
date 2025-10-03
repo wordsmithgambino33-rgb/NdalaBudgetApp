@@ -1,15 +1,15 @@
 
 import * as React from "react";
-import { View, Animated, StyleSheet } from "react-native";
+import { View, Animated, StyleSheet, TouchableOpacity } from "react-native";
 
 // cn
-const cn = (...styles) => Object.assign({}, ...styles.map(s => styles[s] || s));
+const cn = (...styles: any[]) => Object.assign({}, ...styles.map(s => (s && typeof s === 'object' ? s : {})));
 
 function Collapsible({ open, children, ...props }) {
   return <View {...props}>{open && children}</View>; // Basic, add animation below
 }
 
-function CollapsibleTrigger({ onPress, children }) {
+function CollapsibleTrigger({ onPress, children }: { onPress?: () => void; children?: React.ReactNode }) {
   return <TouchableOpacity onPress={onPress}>{children}</TouchableOpacity>;
 }
 

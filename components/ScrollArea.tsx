@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { ScrollArea, ScrollBar };
+// Named exports are declared above; no additional re-export needed.

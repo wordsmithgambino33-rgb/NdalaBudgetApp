@@ -47,7 +47,7 @@ export const InputOTP: React.FC<InputOTPProps> = ({
       <View
         style={StyleSheet.flatten([
           styles.container,
-          containerClassName ? cn(containerClassName) : {},
+            containerClassName ? (cn(containerClassName) as any) : {},
         ])}
       >
         <InputOTPGroup className={cn("flex items-center gap-2", className)}>
@@ -70,11 +70,11 @@ export const InputOTP: React.FC<InputOTPProps> = ({
   );
 };
 
-export const InputOTPGroup: React.FC<{ className?: string; children: React.ReactNode }> = ({
+export const InputOTPGroup: React.FC<{ className?: any; children: React.ReactNode }> = ({
   className,
   children,
 }) => (
-  <View style={StyleSheet.flatten([styles.group, className ? cn(className) : {}])}>
+  <View style={StyleSheet.flatten([styles.group, className ? (cn(className) as any) : {}])}>
     {children}
   </View>
 );

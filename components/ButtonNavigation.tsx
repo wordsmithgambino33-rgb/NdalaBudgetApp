@@ -43,7 +43,7 @@ export function BottomNavigation({ currentScreen, onNavigate }: BottomNavigation
               }}
               style={styles.button}
             >
-              <Animated.View style={[styles.activeBg, isActive && { backgroundColor: colors.primary }, animatedStyle]} />
+              <Animated.View style={[styles.activeBg, isActive && { backgroundColor: colors.primary }, animatedStyle] as any} />
               <Icon size={20} color={isActive ? colors.foreground : colors.primary} />
               <Text style={[styles.label, { color: isActive ? colors.foreground : colors.primary }]}>{item.label}</Text>
             </TouchableOpacity>

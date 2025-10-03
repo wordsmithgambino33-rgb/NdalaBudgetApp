@@ -21,7 +21,7 @@ export const Sheet: React.FC<SheetProps> = ({ open = false, onOpenChange, childr
       <View style={styles.overlay}>
         {React.Children.map(children, (child) =>
           React.isValidElement(child)
-            ? React.cloneElement(child, { onOpenChange })
+            ? React.cloneElement(child as React.ReactElement<any>, { onOpenChange } as any)
             : child
         )}
       </View>
@@ -240,13 +240,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {
-  Sheet,
-  SheetTrigger,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
-  SheetDescription,
-};
+// Named exports declared above; no additional re-export block.
