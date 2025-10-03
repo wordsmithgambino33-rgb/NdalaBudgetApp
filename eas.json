@@ -1,0 +1,34 @@
+
+{
+  "cli": {
+    "version": ">= 16.20.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "shared": {
+      "node": "20.19.5"
+    },
+    "development": {
+      "extends": "shared",
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "extends": "shared",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "extends": "shared",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
