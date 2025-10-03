@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
   txItem: { flexDirection: 'row', alignItems: 'center' },
   txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
   fab: { position: 'absolute', bottom: 96, right: 16, width: 56, height: 56, borderRadius: 28, backgroundColor: '#00796B', justifyContent: 'center', alignItems: 'center' },
-});
+})

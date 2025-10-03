@@ -1,4 +1,9 @@
 {
   "name": "NdalaBudgetApp",
-  "displayName": "NdalaBudgetApp"
+  "displayName": "NdalaBudgetApp",
+  "extra": {
+    "eas": {
+      "projectId": "8cfd2f4e-ce74-4a55-8344-bb0bf56fc5a8"
+    }
+  }
 }
