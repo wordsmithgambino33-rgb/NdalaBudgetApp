@@ -3,7 +3,9 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
-import { ThemeProvider, useTheme } from './ThemeContext';
+
+// ✅ Corrected import paths
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { themes } from './styles/theme';
 import { View, Text, Button } from 'react-native';
 
