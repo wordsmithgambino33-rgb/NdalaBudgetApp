@@ -1,8 +1,10 @@
 
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { ArrowLeft, TrendingUp, TrendingDown, ShoppingCart, Car, GraduationCap, Coffee, Home, Heart, Briefcase, DollarSign, Check } from 'lucide-react-native';
 import { useTheme } from '../contexts/ThemeContext';
+import { db } from '../config'; // Your Firebase config
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface TransactionLoggingProps {
   onBack: () => void;
@@ -15,7 +17,6 @@ export function TransactionLogging({ onBack }: TransactionLoggingProps) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [note, setNote] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
-  const [transactions, setTransactions] = useState([]); // Local storage for demo
 
   const incomeCategories = [
     { id: 'salary', name: 'Salary', icon: Briefcase, color: '#3B82F6' },
@@ -46,15 +47,26 @@ export function TransactionLogging({ onBack }: TransactionLoggingProps) {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (amount && selectedCategory) {
-      const newTx = { type: transactionType, amount: parseFloat(amount), category: selectedCategory, note };
-      setTransactions([...transactions, newTx]); // Save locally
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-        onBack();
-      }, 1500);
+      const newTx = {
+        type: transactionType,
+        amount: parseFloat(amount),
+        category: selectedCategory,
+        note,
+        createdAt: serverTimestamp(), // Optional timestamp
+      };
+
+      try {
+        await addDoc(collection(db, 'transactions'), newTx); // Save to Firestore
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+          onBack();
+        }, 1500);
+      } catch (error) {
+        console.error('Error saving transaction:', error);
+      }
     }
   };
 
@@ -120,21 +132,4 @@ export function TransactionLogging({ onBack }: TransactionLoggingProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  header: { flexDirection: 'row', alignItems: 'center' },
-  title: { fontSize: 20 },
-  typeToggle: { flexDirection: 'row', marginVertical: 16 },
-  toggleButton: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 12, borderRadius: 12 },
-  amountCard: { padding: 16, borderRadius: 16, backgroundColor: '#FFF' },
-  keypad: { flexDirection: 'row', flexWrap: 'wrap' },
-  keypadButton: { width: '33%', padding: 16, alignItems: 'center' },
-  categoryCard: { padding: 16, borderRadius: 16, backgroundColor: '#FFF' },
-  categories: { flexDirection: 'row', flexWrap: 'wrap' },
-  categoryButton: { padding: 16, borderWidth: 2, borderRadius: 16, margin: 4 },
-  noteCard: { padding: 16, borderRadius: 16, backgroundColor: '#FFF' },
-  noteInput: { height: 80, borderWidth: 1, borderRadius: 8 },
-  saveButton: { padding: 16, backgroundColor: '#00796B', borderRadius: 16, alignItems: 'center' },
-  successContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  successIcon: { width: 80, height: 80, backgroundColor: '#10B981', borderRadius: 40, justifyContent: 'center', alignItems: 'center' },
-});
+// ...keep the same styles as you had

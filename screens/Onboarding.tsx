@@ -4,7 +4,14 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { ThemeToggle } from '../components/ThemeToggle';
-// Assume ndalaflowLogo is imported as require('../assets/logo.png')
+import { auth } from '../firebase/config';
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  PhoneAuthProvider,
+  signInWithCredential,
+  RecaptchaVerifier
+} from 'firebase/auth';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -16,12 +23,50 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [verificationId, setVerificationId] = useState<string | null>(null);
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length <= 1) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
+    }
+  };
+
+  // Firebase phone verification
+  const sendPhoneVerification = async () => {
+    try {
+      // @ts-ignore: RecaptchaVerifier in Expo web environment
+      const recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth);
+      const provider = new PhoneAuthProvider(auth);
+      const id = await provider.verifyPhoneNumber(phoneNumber, recaptchaVerifier);
+      setVerificationId(id);
+      setStep(4);
+    } catch (err: any) {
+      console.log('Phone verification error:', err.message);
+    }
+  };
+
+  const verifyOtp = async () => {
+    if (!verificationId) return;
+    const credential = PhoneAuthProvider.credential(verificationId, otp.join(''));
+    try {
+      await signInWithCredential(auth, credential);
+      onComplete();
+    } catch (err: any) {
+      console.log('OTP verification error:', err.message);
+    }
+  };
+
+  // Firebase email signup
+  const handleEmailSignup = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      onComplete();
+    } catch (err: any) {
+      console.log('Email signup error:', err.message);
     }
   };
 
@@ -50,13 +95,20 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         return (
           <View style={styles.stepContainer}>
             <Text>Enter Phone Number</Text>
-            <TextInput placeholder="0881 234 567" value={phoneNumber} onChangeText={setPhoneNumber} keyboardType="phone-pad" style={styles.input} />
-            <TouchableOpacity onPress={() => setStep(4)} disabled={phoneNumber.length < 10} style={styles.button}>
+            <TextInput
+              placeholder="0881 234 567"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+              style={styles.input}
+            />
+            <TouchableOpacity onPress={sendPhoneVerification} disabled={phoneNumber.length < 10} style={styles.button}>
               <Text>Send Code</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setStep(1)}>
               <Text>Back</Text>
             </TouchableOpacity>
+            <View id="recaptcha-container" />
           </View>
         );
       case 3:
@@ -64,8 +116,21 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           <View style={styles.stepContainer}>
             <Text>Create Account</Text>
             <TextInput placeholder="Full Name" value={name} onChangeText={setName} style={styles.input} />
-            <TextInput placeholder="Email Address" keyboardType="email-address" style={styles.input} />
-            <TouchableOpacity onPress={onComplete} style={styles.button}>
+            <TextInput
+              placeholder="Email Address"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+            />
+            <TouchableOpacity onPress={handleEmailSignup} style={styles.button}>
               <Text>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setStep(1)}>
@@ -89,7 +154,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 />
               ))}
             </View>
-            <TouchableOpacity onPress={onComplete} disabled={otp.some((d) => !d)} style={styles.button}>
+            <TouchableOpacity onPress={verifyOtp} disabled={otp.some((d) => !d)} style={styles.button}>
               <Text>Verify & Continue</Text>
             </TouchableOpacity>
             <TouchableOpacity>

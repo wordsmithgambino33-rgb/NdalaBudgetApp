@@ -1,10 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { VictoryPie, VictoryBar, VictoryChart, VictoryAxis, VictoryLine } from 'victory-native';
 import { Svg } from 'react-native-svg';
 import { ArrowLeft, Calendar, Download, TrendingUp, TrendingDown, ChevronLeft, ChevronRight, Filter } from 'lucide-react-native';
 import { useTheme } from '../contexts/ThemeContext';
+import { db } from '../firebaseConfig'; // Add this
+import { collection, getDocs } from 'firebase/firestore'; // Add this
 
 interface ReportsAnalyticsProps {
   onBack: () => void;
@@ -15,39 +17,39 @@ export function ReportsAnalytics({ onBack }: ReportsAnalyticsProps) {
   const [currentMonth, setCurrentMonth] = useState(8); // September (0-indexed)
   const [viewType, setViewType] = useState<'pie' | 'bar' | 'trend'>('pie');
 
+  const [expenseData, setExpenseData] = useState<any[]>([]); // updated for Firebase
+  const [monthlyData, setMonthlyData] = useState<any[]>([]); // updated for Firebase
+  const [trendData, setTrendData] = useState<any[]>([]); // updated for Firebase
+
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  const expenseData = [
-    { name: 'Market & Groceries', value: 68000, color: '#EF4444' },
-    { name: 'School Fees', value: 75000, color: '#3B82F6' },
-    { name: 'Transport', value: 17000, color: '#F97316' },
-    { name: 'Food & Drinks', value: 19500, color: '#EAB308' },
-    { name: 'Rent & Bills', value: 150000, color: '#6B7280' },
-    { name: 'Health', value: 25000, color: '#10B981' },
-  ];
+  // Fetch data from Firebase Firestore
+  useEffect(() => {
+    const fetchData = async () => {
+      // Expenses
+      const expenseSnapshot = await getDocs(collection(db, 'expenses'));
+      const expenses: any[] = [];
+      expenseSnapshot.forEach(doc => expenses.push(doc.data()));
+      setExpenseData(expenses);
 
-  const monthlyData = [
-    { month: 'May', income: 450000, expenses: 280000 },
-    { month: 'Jun', income: 450000, expenses: 320000 },
-    { month: 'Jul', income: 480000, expenses: 295000 },
-    { month: 'Aug', income: 450000, expenses: 354500 },
-    { month: 'Sep', income: 450000, expenses: 165000 },
-  ];
+      // Monthly Data
+      const monthlySnapshot = await getDocs(collection(db, 'monthlyData'));
+      const monthly: any[] = [];
+      monthlySnapshot.forEach(doc => monthly.push(doc.data()));
+      setMonthlyData(monthly);
 
-  const trendData = [
-    { day: '1', amount: 15000 },
-    { day: '5', amount: 8000 },
-    { day: '8', amount: 25000 },
-    { day: '12', amount: 5000 },
-    { day: '15', amount: 75000 },
-    { day: '18', amount: 12000 },
-    { day: '22', amount: 18000 },
-    { day: '25', amount: 30000 },
-    { day: '28', amount: 7000 },
-  ];
+      // Trend Data
+      const trendSnapshot = await getDocs(collection(db, 'trendData'));
+      const trend: any[] = [];
+      trendSnapshot.forEach(doc => trend.push(doc.data()));
+      setTrendData(trend);
+    };
+
+    fetchData();
+  }, []);
 
   const totalExpenses = expenseData.reduce((sum, item) => sum + item.value, 0);
   const totalIncome = 450000;
@@ -75,7 +77,7 @@ export function ReportsAnalytics({ onBack }: ReportsAnalyticsProps) {
               innerRadius={60}
               radius={100}
               colorScale={expenseData.map((entry) => entry.color)}
-              style={{ labels: { fontSize: 0 } }} // Hide labels if not needed
+              style={{ labels: { fontSize: 0 } }}
             />
           </Svg>
         );
@@ -151,7 +153,6 @@ export function ReportsAnalytics({ onBack }: ReportsAnalyticsProps) {
       )}
       <View style={styles.insights}>
         <Text>Financial Insights</Text>
-        {/* Add insights text as in original */}
       </View>
     </View>
   );
